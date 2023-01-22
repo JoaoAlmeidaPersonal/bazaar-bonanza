@@ -30,6 +30,7 @@ function App() {
       <HeaderComponent />
       <Routes>
         <Route element={<RoutesWithUserChatComponent />}>
+          <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product-list" element={<ProductListPage />} />
@@ -53,7 +54,6 @@ function App() {
 
         {/* Admin protected routes */}
         <Route element={<ProtectedRoutesComponent admin={true} />}>
-          <Route path="/" element={<HomePage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
           <Route path="/admin/edit-user" element={<AdminEditUserPage />} />
           <Route path="/admin/products" element={<AdminProductsPage />} />

@@ -1,5 +1,5 @@
 const UserChatComponent = () => {
-    return <p>This ia a user chat component</p>
+    return <p></p>
 }
 
 export default UserChatComponent

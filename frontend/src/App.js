@@ -23,10 +23,12 @@ import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 import RoutesWithUserChatComponent from "./components/user/RoutesWithUserChatComponent";
+import ScrollToTop from "./Utils/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <HeaderComponent />
       <Routes>
         <Route element={<RoutesWithUserChatComponent />}>
@@ -34,7 +36,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product-list" element={<ProductListPage />} />
-          <Route path="/product-details " element={<ProductsDetailsPage />} />
+          <Route path="/product-details" element={<ProductsDetailsPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* User protected routes*/}
 

@@ -4,16 +4,43 @@ import Container from "react-bootstrap/Container";
 import AddedToCartMessageComponent from "../components/AddedToCartMessageComponent";
 import { Button, Image, ListGroup, Form, Alert } from "react-bootstrap";
 import { Rating } from "react-simple-star-rating";
+import ImageZoom from 'js-image-zoom'
+import {useEffect} from "react";
 
 const ProductsDetailsPage = () => {
+  var options = {
+    scale: 2,
+    offset: {vertical : 0, horizontal: 0}
+  }
+  useEffect(() => {
+    new ImageZoom(document.getElementById("first"),options)
+    new ImageZoom(document.getElementById("second"),options)
+    new ImageZoom(document.getElementById("third"),options)
+    new ImageZoom(document.getElementById("fourth"),options)
+  })
   return (
     <Container>
       <AddedToCartMessageComponent />
       <Row className="mt-5">
-        <Col md={4}>
-          <Image className="mt-2" fluid src="/images/shoe1.jpg" />
-          <Image className="mt-2" fluid src="/images/shoe2.jpg" />
-          <Image className="mt-2" fluid src="/images/shoe3.jpg" />
+        <Col style={{zIndex: 1}} md={4}>
+          <div id="first">
+            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe1.jpg" />
+          </div>
+          <br/>
+          <div id="second">
+            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe2.jpg" />
+          </div>
+          <br/>
+          <div id="third">
+            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe3.jpg" />
+          </div>
+          <br/>
+          <div id="fourth">
+            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe1.jpg" />
+          </div>
+          <br/>
+
+
         </Col>
         <Col md={8}>
           <Row>

@@ -1,7 +1,12 @@
 const Category = require("../models/UserModel")
 
-const getUsers = (req,res) => {
-    res.send("Handling product routes, eg searching for categories")
+const getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find({}).select("-password")
+        return res.json(users)
+    } catch (err) {
+        next(err)
+    }
 }
 
 module.exports = getUsers

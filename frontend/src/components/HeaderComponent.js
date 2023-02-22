@@ -8,7 +8,7 @@ import {
   DropdownButton,
   Dropdown,
   Button,
-  InputGroup,
+  InputGroup, Image,
 } from "react-bootstrap";
 
 import { LinkContainer } from "react-router-bootstrap";
@@ -20,7 +20,7 @@ const HeaderComponent = () => {
       <Container>
         <LinkContainer to="/">
           <Navbar.Brand  href="/">
-            <img src="logo.JPG" alt="..." height="36" />
+            <Image crossOrigin="anonymous" src="/images/logo.JPG" height="36" />
           </Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

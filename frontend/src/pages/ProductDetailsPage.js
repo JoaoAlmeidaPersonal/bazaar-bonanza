@@ -4,43 +4,71 @@ import Container from "react-bootstrap/Container";
 import AddedToCartMessageComponent from "../components/AddedToCartMessageComponent";
 import { Button, Image, ListGroup, Form, Alert } from "react-bootstrap";
 import { Rating } from "react-simple-star-rating";
-import ImageZoom from 'js-image-zoom'
-import {useEffect} from "react";
+import ImageZoom from "js-image-zoom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/actions/cartActions";
 
 const ProductsDetailsPage = () => {
+  const dispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(addToCart());
+  };
+
+  const products = useSelector((state) => state.cart.value)
+
   var options = {
     scale: 2,
-    offset: {vertical : 0, horizontal: 0}
-  }
+    offset: { vertical: 0, horizontal: 0 },
+  };
   useEffect(() => {
-    new ImageZoom(document.getElementById("first"),options)
-    new ImageZoom(document.getElementById("second"),options)
-    new ImageZoom(document.getElementById("third"),options)
-    new ImageZoom(document.getElementById("fourth"),options)
-  })
+    new ImageZoom(document.getElementById("first"), options);
+    new ImageZoom(document.getElementById("second"), options);
+    new ImageZoom(document.getElementById("third"), options);
+    new ImageZoom(document.getElementById("fourth"), options);
+  });
   return (
     <Container>
       <AddedToCartMessageComponent />
       <Row className="mt-5">
-        <Col style={{zIndex: 1}} md={4}>
+        <Col style={{ zIndex: 1 }} md={4}>
           <div id="first">
-            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe1.jpg" />
+            <Image
+              crossOrigin="anonymous"
+              className="mt-2"
+              fluid
+              src="/images/shoe1.jpg"
+            />
           </div>
-          <br/>
+          <br />
           <div id="second">
-            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe2.jpg" />
+            <Image
+              crossOrigin="anonymous"
+              className="mt-2"
+              fluid
+              src="/images/shoe2.jpg"
+            />
           </div>
-          <br/>
+          <br />
           <div id="third">
-            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe3.jpg" />
+            <Image
+              crossOrigin="anonymous"
+              className="mt-2"
+              fluid
+              src="/images/shoe3.jpg"
+            />
           </div>
-          <br/>
+          <br />
           <div id="fourth">
-            <Image crossOrigin="anonymous" className="mt-2" fluid src="/images/shoe1.jpg" />
+            <Image
+              crossOrigin="anonymous"
+              className="mt-2"
+              fluid
+              src="/images/shoe1.jpg"
+            />
           </div>
-          <br/>
-
-
+          <br />
         </Col>
         <Col md={8}>
           <Row>
@@ -78,7 +106,9 @@ const ProductsDetailsPage = () => {
                   </Form.Select>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button variant="danger">Comprar</Button>
+                  <Button onClick={addToCartHandler} variant="danger">
+                    Comprar
+                  </Button>
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -90,9 +120,13 @@ const ProductsDetailsPage = () => {
                 {Array.from({ length: 5 }).map((item, idx) => (
                   <ListGroup.Item key={idx}>
                     John Doe <br />
-                    <Rating readonly initialValue={4} size={20}/> <br/>
-                    20-09-2001 <br/>
-                    "Eu adorei o hotel! A localização é ótima, perto de muitos lugares para comer e de uma praia linda. O quarto era espaçoso e limpo, e o café da manhã era incrível. Eu definitivamente recomendo este hotel para quem estiver procurando por uma estadia confortável e agradável."
+                    <Rating readonly initialValue={4} size={20} /> <br />
+                    20-09-2001 <br />
+                    "Eu adorei o hotel! A localização é ótima, perto de muitos
+                    lugares para comer e de uma praia linda. O quarto era
+                    espaçoso e limpo, e o café da manhã era incrível. Eu
+                    definitivamente recomendo este hotel para quem estiver
+                    procurando por uma estadia confortável e agradável."
                   </ListGroup.Item>
                 ))}
               </ListGroup>
@@ -114,7 +148,9 @@ const ProductsDetailsPage = () => {
               <option value="2">Okay</option>
               <option value="3">Mau</option>
             </Form.Select>
-            <Button className="mt-3 mb-3" variant="primary">Enviar</Button>
+            <Button className="mt-3 mb-3" variant="primary">
+              Enviar
+            </Button>
           </Form>
         </Col>
       </Row>

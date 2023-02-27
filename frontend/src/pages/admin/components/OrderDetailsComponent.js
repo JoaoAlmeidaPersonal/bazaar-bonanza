@@ -12,7 +12,11 @@ import CartItemComponent from "../../../components/CartItemComponent";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import {logout} from "../../../redux/actions/userActions";
+import {useDispatch} from "react-redux";
+
 const OrderDetailsComponent = ({ fetchOrderDetails, markAsDelivered }) => {
+  const dispatch = useDispatch()
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState({});
@@ -41,10 +45,7 @@ const OrderDetailsComponent = ({ fetchOrderDetails, markAsDelivered }) => {
         }
         setCartItems(order.cartItems);
       })
-      .catch((er) =>
-        console.log(
-          er.response.data.message ? er.response.data.message : er.response.data
-        )
+      .catch((er) => dispatch(logout())
       );
   }, [isDelivered, id]);
   return (

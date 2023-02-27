@@ -3,10 +3,13 @@ import {LinkContainer} from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
 import {useState, useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {logout} from "../../../redux/actions/userActions";
 
 const UsersPageComponent = ({fetchUsers, deleteUser}) => {
     const [users, setUsers] = useState([]);
     const [userDeleted, setUserDeleted] = useState(false);
+    const dispatch = useDispatch()
 
     const deleteHandler = async (userId) => {
         if (window.confirm("Are you sure?")) {
@@ -22,9 +25,7 @@ const UsersPageComponent = ({fetchUsers, deleteUser}) => {
         fetchUsers(abctrl)
             .then((res) => setUsers(res))
             .catch((er) =>
-                console.log(
-                    er.response.data.message ? er.response.data.message : er.response.data
-                )
+                dispatch(logout())
             );
         return () => abctrl.abort();
     }, [userDeleted]);

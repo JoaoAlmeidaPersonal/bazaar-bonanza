@@ -4,19 +4,20 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {logout} from "../../../redux/actions/userActions";
 
 
 const OrdersPageComponent = ({fetchOrders}) => {
     const [orders, setOrders] = useState([]);
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const abctrl = new AbortController();
         fetchOrders(abctrl)
             .then((res) => setOrders(res))
             .catch((er) =>
-                console.log(
-                    er.response.data.message ? er.response.data.message : er.response.data
-                )
+                dispatch(logout())
             );
         return () => abctrl.abort();
     }, []);

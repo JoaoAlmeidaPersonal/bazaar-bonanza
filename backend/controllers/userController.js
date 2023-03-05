@@ -46,7 +46,7 @@ const registerUser = async (req, res, next) => {
             user.isAdmin
           ),
           {
-            httpOnly: true,
+            httpOnly: false,
             secure: false, // DEV ONLY CHANGE LATER
             sameSite: "none",
           }
@@ -79,7 +79,7 @@ const loginUser = async (req, res, next) => {
     }).orFail();
     if (user && comparePasswords(password, user.password)) {
       let cookieParams = {
-        httpOnly: true,
+        httpOnly: false,
         secure: false, //DEV ONLY CHANGE LATER
         sameSite: "none",
       };

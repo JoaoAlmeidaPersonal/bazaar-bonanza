@@ -1,11 +1,16 @@
-import { Button, Form, Image, ListGroupItem } from "react-bootstrap";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import { Row, Col, Image, ListGroup, Form, Button } from "react-bootstrap";
+import RemoveFromCartComponent from "../pages/components/RemoveFromCartComponent";
 
-const CartItemComponent = ({ item, orderCreated = false }) => {
+const CartItemComponent = ({
+  item,
+  removeFromCartHandler = false,
+  orderCreated = false,
+  changeCount = false,
+
+}) => {
   return (
     <>
-      <ListGroupItem>
+      <ListGroup.Item>
         <Row>
           <Col md={2}>
             <Image
@@ -14,13 +19,17 @@ const CartItemComponent = ({ item, orderCreated = false }) => {
               fluid
             />
           </Col>
-          <Col md={3}>{item.name}</Col>
-          <Col md={1}>
-            <span className="fw-bold">${item.price}</span>
-          </Col>
+          <Col md={2}>{item.name}</Col>
           <Col md={2}>
+            <b>${item.price}</b>
+          </Col>
+          <Col md={3}>
             <Form.Select
-              onChange={() => {}}
+              onChange={
+                changeCount
+                  ? (e) => changeCount(item.productID, e.target.value)
+                  : undefined
+              }
               disabled={orderCreated}
               value={item.quantity}
             >
@@ -32,16 +41,19 @@ const CartItemComponent = ({ item, orderCreated = false }) => {
             </Form.Select>
           </Col>
           <Col md={3}>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => window.confirm("Are you sure?")}
-            >
-              <i className="bi bi-trash" />
-            </Button>
+            <RemoveFromCartComponent
+              orderCreated={orderCreated}
+              productID={item.productID}
+              quantity={item.quantity}
+              price={item.price}
+              removeFromCartHandler={
+                removeFromCartHandler ? removeFromCartHandler : undefined
+              }
+            />
           </Col>
         </Row>
-      </ListGroupItem>
+      </ListGroup.Item>
+      <br />
     </>
   );
 };

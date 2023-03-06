@@ -5,17 +5,19 @@ import { useDispatch } from "react-redux";
 import { setReduxUserState } from "../redux/actions/userActions";
 
 const loginUserApiRequest = async (email, password, doNotLogout) => {
-  const { data } = await axios.post("/api/users/login", {
-    email,
-    password,
-    doNotLogout,
-  });
-  if(data.userLoggedIn.doNotLogout) {
-    localStorage.setItem("userInfo",
-        JSON.stringify(data.userLoggedIn))
+  const { data } = await axios.post(
+    "/api/users/login",
+    {
+      email,
+      password,
+      doNotLogout,
+    },
+    { withCredentials: true }
+  );
+  if (data.userLoggedIn.doNotLogout) {
+    localStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
   } else {
-    sessionStorage.setItem("userInfo",
-        JSON.stringify(data.userLoggedIn))
+    sessionStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
   }
   return data;
 };

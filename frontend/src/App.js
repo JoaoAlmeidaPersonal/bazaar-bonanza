@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import ProductListPage from "./pages/ProductListPage";
-import ProductsDetailsPage from "./pages/ProductDetailsPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import UserOrdersPage from "./pages/user/UserOrdersPage";
@@ -24,8 +24,13 @@ import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 import RoutesWithUserChatComponent from "./components/user/RoutesWithUserChatComponent";
 import ScrollToTop from "./Utils/ScrollToTop";
+import axios from "axios";
 
 function App() {
+  axios.defaults.baseURL = 'https://bazaar-bonanza-backend.onrender.com';
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  // axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -36,7 +41,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product-list" element={<ProductListPage />} />
-          <Route path="/product-details" element={<ProductsDetailsPage />} />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* User protected routes*/}
 
@@ -48,7 +53,7 @@ function App() {
               element={<UserCartDetailsPage />}
             />
             <Route
-              path="/user/order-details"
+              path="/user/order-details/:id"
               element={<UserOrderDetailsPage />}
             />
           </Route>

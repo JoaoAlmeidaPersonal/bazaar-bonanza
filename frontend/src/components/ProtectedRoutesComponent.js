@@ -8,7 +8,8 @@ const ProtectedRoutesComponent = ({ admin }) => {
   const [isAuth, setIsAuth] = useState();
 
   useEffect(() => {
-    axios.get("/api/get-token ").then(function (data) {
+    axios.get("/api/get-token").then(function (data) {
+      console.log(data)
       if (data.data.token) {
         setIsAuth(data.data.token);
       }

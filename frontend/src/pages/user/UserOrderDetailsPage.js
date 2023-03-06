@@ -1,79 +1,115 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import {Alert, Button, Form, ListGroup} from "react-bootstrap";
-import CartItemComponent from "../../components/CartItemComponent";
+import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComponent";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { loadScript } from "@paypal/paypal-js";
+
+const getOrder = async (orderId) => {
+  const { data } = await axios.get("/api/orders/user/" + orderId);
+  return data;
+};
+
+const loadPayPalScript = (
+  cartSubtotal,
+  cartItems,
+  orderId,
+  updateStateAfterOrder
+) => {
+  loadScript({
+    "client-id":
+      "" +
+      "AR5HFclZ1ostfNF5XDDykm20kUag6lR4G14_qUFrnHbeIa2ZpEMZ4Pa5XVDiP9hQY0Uzn9HQP26a3hpD",
+  })
+    .then((paypal) => {
+      paypal
+        .Buttons(
+          buttons(cartSubtotal, cartItems, orderId, updateStateAfterOrder)
+        )
+        .render("#paypal-container-element");
+    })
+    .catch((err) => {
+      console.error("failed to load the PayPal JS SDK script", err);
+    });
+};
+
+const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
+  return {
+    createOrder: function (data, actions) {
+      return actions.order.create({
+        purchase_units: [
+          {
+            amount: {
+              value: cartSubtotal,
+              breakdown: {
+                item_total: {
+                  currency_code: "USD",
+                  value: cartSubtotal,
+                },
+              },
+            },
+            items: cartItems.map((product) => {
+              return {
+                name: product.name,
+                unit_amount: {
+                  currency_code: "USD",
+                  value: product.price,
+                },
+                quantity: product.quantity,
+              };
+            }),
+          },
+        ],
+      });
+    },
+    onCancel: onCancelHandler,
+    onApprove: function (data, actions) {
+      return actions.order.capture().then(function (orderData) {
+        var transaction = orderData.purchase_units[0].payments.captures[0];
+        if (
+          transaction.status === "COMPLETED" &&
+          Number(transaction.amount.value) === Number(cartSubtotal)
+        ) {
+          updateOrder(orderId)
+            .then((data) => {
+              if (data.isPaid) {
+                updateStateAfterOrder(data.paidAt);
+              }
+            })
+            .catch((er) => console.log(er));
+        }
+      });
+    },
+    onError: onErrorHandler,
+  };
+};
+
+const onCancelHandler = function () {
+  console.log("cancel");
+};
+
+const onErrorHandler = function (err) {
+  console.log("error");
+};
+
+const updateOrder = async (orderId) => {
+  const { data } = await axios.put("/api/orders/paid/" + orderId);
+  return data;
+}
 
 const UserOrderDetailsPage = () => {
+  const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+
+  const getUser = async () => {
+    const { data } = await axios.get("/api/users/profile/" + userInfo._id);
+    return data;
+  };
+
   return (
-    <Container fluid>
-      <Row className="mt-4">
-        <h1>Order Details</h1>
-        <Col md={8}>
-          <br />
-          <Row>
-            <Col md={6}>
-              <h2>Shipping</h2>
-              <b>Name</b>: John Doe <br />
-              <b>Address</b>: 8739 Mayflower St. Los Angeles, CA 90063 <br />
-              <b>Phone</b>: 888 777 666
-            </Col>
-            <Col md={6}>
-              <h2>Payment method</h2>
-              <Form.Select disabled={false}>
-                <option value="pp">PayPal</option>
-                <option value="pp">Cash On Delivery</option>
-              </Form.Select>
-            </Col>
-            <Row>
-              <Col>
-                <Alert className="mt-3" variant="danger">
-                  Not Delivered
-                </Alert>
-              </Col>
-              <Col>
-                <Alert className="mt-3" variant="success">
-                  Paid on 2022-10-02
-                </Alert>
-              </Col>
-            </Row>
-          </Row>
-          <br />
-          <h2>Order items</h2>
-          <ListGroup variant="flush">
-            {Array.from({ length: 3 }).map((item, idx) => (
-                <CartItemComponent item={{image: {path:"/images/tablets-category.png"}, name: "Product name", price:10, count:10, quantity:10}} key={idx} />
-            ))}
-          </ListGroup>
-        </Col>
-        <Col md={4}>
-          <ListGroup>
-            <ListGroup.Item>
-              <h3>Order summary</h3>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Items price (after tax): <span className="fw-bold">$892</span>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Shipping: <span className="fw-bold">included</span>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Tax: <span className="fw-bold">included</span>
-            </ListGroup.Item>
-            <ListGroup.Item className="text-danger">
-              Total price: <span className="fw-bold">$904</span>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <div className="d-grid gap-2">
-                <Button size="lg" variant="danger" type="button">
-                  Pay for the order
-                </Button>
-              </div>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-      </Row>
-    </Container>
+    <UserOrderDetailsPageComponent
+      userInfo={userInfo}
+      getUser={getUser}
+      getOrder={getOrder}
+      loadPayPalScript={loadPayPalScript}
+    />
   );
 };
 

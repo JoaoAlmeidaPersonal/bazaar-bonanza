@@ -6,13 +6,12 @@ const port = 5000;
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 
+const corsConfig = {
+  credentials: true,
+  origin: true,
+};
 
-var corsOptions = {
-  origin: '*',
-  credentials: true };
-
-app.use(cors(corsOptions));
-
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload());

@@ -7,6 +7,8 @@ const orderRoutes = require("./orderRoutes");
 
 const jwt = require("jsonwebtoken");
 
+
+
 app.get("/logout", (req,res) => {
   return res.clearCookie("access_token").send(" ")
 })
@@ -23,6 +25,7 @@ app.get("/get-token", (req, res) => {
     return res.status(401).send("Unauthorized. Invalid Token  ")
   }
 });
+
 
 app.use("/products", productRoutes);
 app.use("/categories", categoryRoutes);

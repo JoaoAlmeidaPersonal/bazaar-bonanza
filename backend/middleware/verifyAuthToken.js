@@ -28,3 +28,4 @@ const verifyIsAdmin = (req, res, next) => {
 }
 
 module.exports = { verifyIsLoggedIn, verifyIsAdmin }
+

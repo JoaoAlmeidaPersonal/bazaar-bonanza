@@ -6,17 +6,21 @@ const port = 5000;
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:3000",
+      "https://bazaar-bonanza.vercel.app/",
+      "https://bazaar-bonanza-git-main-joaoalmeidapersonal.vercel.app/",
+      "https://bazaar-bonanza-fvz3zndvv-joaoalmeidapersonal.vercel.app",
+    ],
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload());
-
-
-
-
-
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");

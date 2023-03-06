@@ -6,17 +6,12 @@ const port = 5000;
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 
-app.use(
-  cors({
-    credentials: true,
-    origin: [
-      "http://localhost:3000",
-      "https://bazaar-bonanza.vercel.app/",
-      "https://bazaar-bonanza-git-main-joaoalmeidapersonal.vercel.app/",
-      "https://bazaar-bonanza-fvz3zndvv-joaoalmeidapersonal.vercel.app",
-    ],
-  })
-);
+
+var corsOptions = {
+  origin: '*',
+  credentials: true };
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
